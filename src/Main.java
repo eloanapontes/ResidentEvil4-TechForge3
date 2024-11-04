@@ -1,9 +1,11 @@
 import model.Cena;
 import model.Escolha;
 import model.Item;
+import model.Save;
 import repository.CenaDAO;
 import repository.EscolhaDAO;
 import repository.ItemDAO;
+import repository.SaveDAO;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -14,6 +16,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int cenaAtualId = 1; // Começa na primeira cena
         boolean jogoAtivo = true;
+
 
 
         System.out.println("Leon S. Kennedy é enviado para resgatar a filha do presidente dos Estados Unidos, Ashley\n" +
@@ -66,6 +69,9 @@ public class Main {
                             "completem a missão com sucesso. \"Missão cumprida. Ashley está a salvo, mas o pesadelo.... ainda não acabou.\"");
                     jogoAtivo = false;
                 }
+                //System.out.println("Novo Save: ");
+                Save save = SaveDAO.novoJogo(cenaAtualId); // Passa o ID da cena atual
+                System.out.println(save.getIdSave());
 
             } catch (SQLException e) {
                 System.out.println("Erro ao acessar o banco de dados: " + e.getMessage());
