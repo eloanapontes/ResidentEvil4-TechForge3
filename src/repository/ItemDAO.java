@@ -7,26 +7,36 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDAO {
-   // public static Item findItemById(int id){ //receber parametro do ID e retornar instância da classe Item quando o id for encontrado no banco
-        //return new Item();
-  //  }
 
-    public static Item findItesByScene(int id) throws SQLException {
-        Connection conn = Mysql.getConnection();
-        String sql = "SELECT * FROM item WHERE id_item = ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1,id);
-        ResultSet rs = stmt.executeQuery();
-        Item item = new Item();
+    public static List<Item> findItemsByScene(int id_item) throws SQLException {
+        String sql = "SELECT * FROM item WHERE id = ?";
+        List<Item> itens = new ArrayList<>();
 
-        if (rs.next()){
-            item.setId_item(rs.getInt("id_item"));
-            item.setDescricaoPositiva(rs.getString("descricaoPositiva"));
+        try (Connection conn = Mysql.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        }return item;
+            stmt.setInt(1, id_item);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Item item = new Item();
+                    item.setId_item(rs.getInt("id_item"));
+                    item.setNome(rs.getString("nome"));
+                    item.setDescricaoPositiva(rs.getString("descricaoPositiva"));
+                    item.setDescricaoNegativa(rs.getString("descricaoNegativa"));
+                    item.setComandoCorreto(rs.getString("comandoCorreto"));
+                    item.setIdCenaAtual(rs.getInt("idCenaAtual"));
+                    item.setIdCenaDestino(rs.getInt("idCenaDestino"));
+                    itens.add(item);
+                }
+            }
+        }
+
+        return itens;
     }
 
 }
+

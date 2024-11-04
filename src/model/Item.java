@@ -9,6 +9,8 @@ public class Item {
     private int idCenaAtual;
     private int idCenaDestino;
 
+    // Getters e Setters
+
     public int getId_item() {
         return id_item;
     }

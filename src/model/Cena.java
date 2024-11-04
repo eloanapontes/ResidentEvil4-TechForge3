@@ -1,52 +1,24 @@
 package model;
 
+import repository.EscolhaDAO;
+
+import java.sql.SQLException;
 import java.util.List;
 
 public class Cena {
     private int id_cena;
     private String descricao;
     private boolean status;
-    private List<Item> itens;
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public int getId_cena() {
-        return id_cena;
-    }
-
-    public void setId_cena(int id_cena) {
+    public Cena(int id_cena, String descricao) {
         this.id_cena = id_cena;
+        this.descricao = descricao;
+        this.status = false;
     }
 
-    public List<Item> getItens() {
-        return itens;
-    }
-
-    public void setItens(List<Item> itens) {
-        this.itens = itens;
-    }
-
-    //transforma a classe em string?
-    @Override
-    public String toString() {
-        return "Cena{" +
-                "id_cena=" + id_cena +
-                ", descricao='" + descricao + '\'' +
-                ", status=" + status +
-                '}';
+    public int getId_cena() { return id_cena; }
+    public String getDescricao() { return descricao; }
+    public List<Escolha> getOpcoes() throws SQLException {
+        return EscolhaDAO.findChoicesByScene(this.id_cena);
     }
 }
