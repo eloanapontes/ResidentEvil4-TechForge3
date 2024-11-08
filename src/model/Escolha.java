@@ -6,7 +6,7 @@ public class Escolha {
     private String resultado;
     private int cenaId;
 
-    // Getters e Setters
+    private String use_descricao;
     public int getId_escolha() {
         return id_escolha;
     }
@@ -39,6 +39,14 @@ public class Escolha {
         this.cenaId = cenaId;
     }
 
+    public String getUse_descricao() {
+        return use_descricao;
+    }
+
+    public void setUse_descricao(String use_descricao) {
+        this.use_descricao = use_descricao;
+    }
+
     @Override
     public String toString() {
         return "Escolha{" +
@@ -46,6 +54,7 @@ public class Escolha {
                 ", descricao='" + descricao + '\'' +
                 ", resultado='" + resultado + '\'' +
                 ", cenaId=" + cenaId +
+                ", use_descricao='" + use_descricao + '\'' +
                 '}';
     }
 }

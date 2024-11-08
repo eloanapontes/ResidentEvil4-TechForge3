@@ -16,7 +16,6 @@ public class CenaDAO {
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
-            // Cria uma nova instância de Cena com os dados do ResultSet
             int cenaId = rs.getInt("ID_Cena");
             String descricao = rs.getString("Descricao");
             Cena cena = new Cena(cenaId, descricao);

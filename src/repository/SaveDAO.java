@@ -10,7 +10,7 @@ public class SaveDAO {
         Connection conn = Mysql.getConnection();
         String sql = "INSERT INTO saves(id_cena_atual) VALUES (?)";
         PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        stmt.setInt(1, idCenaAtual); // Define o valor de idCenaAtual
+        stmt.setInt(1, idCenaAtual);
         stmt.executeUpdate();
         ResultSet generatedKeys = stmt.getGeneratedKeys();
         Save save = new Save();

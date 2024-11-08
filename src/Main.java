@@ -14,19 +14,18 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int cenaAtualId = 1; // Começa na primeira cena
+        int cenaAtualId = 1; // começa na primeira cena 1
         boolean jogoAtivo = true;
 
 
 
-        System.out.println("Leon S. Kennedy é enviado para resgatar a filha do presidente dos Estados Unidos, Ashley\n" +
-                "Graham, que foi sequestrada por um culto religioso em uma parte rural da Espanha. Ao chegar,\n" +
-                "Leon se depara com horrores inimagináveis, enfrentando aldeões violentos e criaturas\n" +
-                "mutantes controladas por um parasita mortal.\n" +
-                "Leon deve usar toda sua habilidade e inteligência para infiltrar a Igreja onde Ashley está presa.\n" +
-                "Cada decisão pode ser a diferença entre o sucesso e o fracasso, com escolhas que levarão ao\n" +
-                "resgate ou à repetição de seus erros. Apenas um caminho é o certo (— qualquer deslize e Leon\n" +
-                "será forçado a recomeçar sua missão mortal.)\n");
+        try {
+            Cena cenaInicial = CenaDAO.findCenaById(6);
+            System.out.println(cenaInicial.getDescricao());
+        } catch (SQLException e) {
+            System.out.println("Erro ao acessar o banco de dados: " + e.getMessage());
+            return;
+        }
 
         while (jogoAtivo) {
             try {
@@ -41,36 +40,53 @@ public class Main {
                 }
 
                 System.out.print("Digite a escolha desejada: \n");
-                int escolhaUsuario = scanner.nextInt();
+                String escolhaUsuario = scanner.next();
                 scanner.nextLine();
 
                 Escolha escolhaSelecionada = null;
                 for (Escolha escolha : escolhas) {
-                    if (escolha.getId_escolha() == escolhaUsuario) {
+                    if (escolha.getUse_descricao().equals(escolhaUsuario)) {
                         escolhaSelecionada = escolha;
                         break;
                     }
 
+
+
                 }
                 if (escolhaSelecionada != null) {
                     System.out.println("Você escolheu: " + escolhaSelecionada.getDescricao());
-                    EscolhaDAO.inserirEscolha(escolhaSelecionada.getDescricao(), escolhaSelecionada.getResultado(), cenaAtualId);
+                    EscolhaDAO.inserirEscolha(escolhaSelecionada.getDescricao(), escolhaSelecionada.getResultado(), cenaAtualId, escolhaSelecionada.getUse_descricao());
                     //condição de avança ou volta o loop da cena
+                    if ((escolhaSelecionada.getResultado().equals("help"))){
+                        System.out.println("comandos de ajuda!" +
+                                "break - acaba o jogo " +
+                                "digite o comando desejado referente a cada opção");
+
+                    }
+                    if (escolhaSelecionada.getResultado().equals("break")){
+                        jogoAtivo = false;
+                    }
                     if (escolhaSelecionada.getResultado().equals("sucesso")) {
                         cenaAtualId++; // incrementa o id da cena qyue se identifica por altoincrementar
-                    } else {
-                        System.out.println("Opção incorreta! Reiniciando a fase!! " + cena.getDescricao()); //poderia adicionar uma condição para cada escolha mas não consegui implementar
+                    }
+                    else {
+                        System.out.println("Escolha novamente! "); //poderia adicionar uma condição para cada escolha mas não consegui implementar
                     }
                 } else { //se for algum id invalido no bd
                     System.out.println("Escolha inválida. Tente novamente.");
                 }
                 if (cenaAtualId > 5) { //cena id 5 é a ultima, então o while precisa do false pra fechar
-                    System.out.println("Um helicóptero de resgate chega, permitindo que Leon e Ashley escapem da vila e\n" +
-                            "completem a missão com sucesso. \"Missão cumprida. Ashley está a salvo, mas o pesadelo.... ainda não acabou.\"");
+                    try {
+                        Cena cenaFinal = CenaDAO.findCenaById(7);
+                        System.out.println(cenaFinal.getDescricao());
+
+                    }catch (SQLException e){
+                        System.out.println("Erro ao acessar o banco de dados para a cena final: " + e.getMessage());
+                    }
                     jogoAtivo = false;
                 }
-                //System.out.println("Novo Save: ");
-                Save save = SaveDAO.novoJogo(cenaAtualId); // Passa o ID da cena atual
+                System.out.println("Save atual: ");
+                Save save = SaveDAO.novoJogo(cenaAtualId); // passa o id da cena atual
                 System.out.println(save.getIdSave());
 
             } catch (SQLException e) {

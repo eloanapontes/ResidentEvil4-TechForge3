@@ -187,5 +187,5 @@ select * from saves;
 
 delete from saves;
 
+select * from item i 
 
-  
