@@ -17,7 +17,7 @@ public class Main {
         int cenaAtualId = 1; // começa na primeira cena 1
         boolean jogoAtivo = true;
 
-
+//implementar player
 
         try {
             Cena cenaInicial = CenaDAO.findCenaById(6);
